@@ -34,8 +34,8 @@ model User {
 
   likes Post[] @relation("PostLikes")
 
-  followedBy Follow[] @relation("followedBy")
-  following  Follow[] @relation("following")
+  followers Follow[] @relation("follower")
+  following Follow[] @relation("following")
 
   sentFollowRequests     FollowRequest[] @relation("sender")
   receivedFollowRequests FollowRequest[] @relation("receiver")
@@ -55,15 +55,15 @@ model UserProfile {
 }
 
 model Follow {
-  followedBy   User   @relation("followedBy", fields: [followedById], references: [id])
-  followedById String
+  follower   User   @relation("follower", fields: [followerId], references: [id])
+  followerId String
 
   following   User   @relation("following", fields: [followingId], references: [id])
   followingId String
 
   createdAt DateTime @default(now())
 
-  @@unique([followingId, followedById])
+  @@unique([followerId, followingId])
 }
 
 model FollowRequest {
