@@ -167,10 +167,36 @@ const findFollowRequestById = async (id) => {
   }
 };
 
+const deleteFollow = async (followerId, followingId) => {
+  try {
+    const existingFollow = await prisma.follow.findUnique({
+      where: {
+        followerId_followingId: { followerId, followingId },
+      },
+    });
+
+    if (!existingFollow) {
+      throw new Error('Follow relationship not found');
+    }
+
+    const deletedFollow = await prisma.follow.delete({
+      where: {
+        followerId_followingId: { followerId, followingId },
+      },
+    });
+
+    return deletedFollow;
+  } catch (error) {
+    console.error('Failed to delete follow:', error);
+    throw new Error(error.message);
+  }
+};
+
 module.exports = {
   addFollowRequest,
   acceptFollowRequest,
   addFollow,
   findUserFollowings,
   findUserFollowers,
+  deleteFollow,
 };

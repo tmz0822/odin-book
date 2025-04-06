@@ -74,6 +74,7 @@ const findById = async (id) => {
       },
     });
 
+    // Map the relationships to make them more intuitive
     return user;
   } catch (error) {
     console.error('Failed to find user:', error);

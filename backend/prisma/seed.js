@@ -102,14 +102,6 @@ const seedDatabase = async () => {
           followerId: user1.id, // User1 follows User2
           followingId: user2.id,
         },
-        {
-          followerId: user2.id, // User2 follows User1
-          followingId: user1.id,
-        },
-        {
-          followerId: user3.id, // User3 follows User1
-          followingId: user1.id,
-        },
       ],
     });
 

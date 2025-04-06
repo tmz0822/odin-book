@@ -13,6 +13,9 @@ router.get('/me/followers', followController.getUserFollowers);
 router.get('/:userId/followers', followController.getUserFollowers);
 
 router.post('/:userId/request', followController.sendFollowRequest); // send follow request
+
+router.delete('/:followingId/unfollow', followController.unFollow);
+
 router.put('/:followRequestId/accept', followController.acceptFollowRequest);
 
 module.exports = router;

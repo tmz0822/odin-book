@@ -71,9 +71,24 @@ const getUserFollowers = async (req, res) => {
   }
 };
 
+const unFollow = async (req, res) => {
+  const userId = req.user.id;
+  const followingId = req.params.followingId;
+
+  try {
+    const deletedFollow = await Follow.deleteFollow(userId, followingId);
+
+    res.json({ success: true, deletedFollow });
+  } catch (error) {
+    console.error('Failed to unfollow');
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   sendFollowRequest,
   acceptFollowRequest,
   getUserFollowings,
   getUserFollowers,
+  unFollow,
 };
