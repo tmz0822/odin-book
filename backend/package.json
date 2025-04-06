@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js && npx prisma studio"
+    "start": "npm-run-all --parallel server prisma",
+    "server": "nodemon src/app.js",
+    "prisma": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "npm-run-all": "^4.1.5",
     "prisma": "^6.5.0"
   },
   "dependencies": {
@@ -26,3 +29,4 @@
     "passport-local": "^1.0.0"
   }
 }
+

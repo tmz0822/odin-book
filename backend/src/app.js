@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const authRouter = require('../routes/authRouter');
 const userRouter = require('../routes/userRouter');
+const postRouter = require('../routes/postRouter');
 
 // Security Middlewares
 app.use(cors());
@@ -48,6 +49,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
+app.use('/posts', postRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
