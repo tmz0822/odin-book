@@ -7,10 +7,8 @@ const router = Router();
 
 router.use(isAuthenticated);
 
+// /posts
 router.get('/', postController.getAllPosts);
-
-router.get('/me', postController.getUserPosts);
-router.get('/:userId', postController.getUserPosts);
 
 router.post('/', postController.createPost);
 router.delete('/:postId', postController.deletePost);

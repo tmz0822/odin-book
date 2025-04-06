@@ -35,7 +35,7 @@ const addFollowRequest = async (senderId, receiverId) => {
   }
 };
 
-const acceptFollowRequest = async (userId, followRequestId) => {
+const acceptFollowRequest = async (userId, followRequestId, status) => {
   try {
     const followRequest = await findFollowRequestById(followRequestId);
 
@@ -53,7 +53,7 @@ const acceptFollowRequest = async (userId, followRequestId) => {
         id: followRequestId,
       },
       data: {
-        status: 'ACCEPTED',
+        status: status,
       },
     });
 

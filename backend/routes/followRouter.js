@@ -6,16 +6,18 @@ const { isAuthenticated } = require('../middlewares/auth');
 
 router.use(isAuthenticated);
 
-router.get('/me/followings', followController.getUserFollowings);
-router.get('/:userId/followings', followController.getUserFollowings);
+// /users
 
-router.get('/me/followers', followController.getUserFollowers);
+router.get('/:userId/following', followController.getUserFollowings);
 router.get('/:userId/followers', followController.getUserFollowers);
 
-router.post('/:userId/request', followController.sendFollowRequest); // send follow request
+router.post('/:userId/following', followController.sendFollowRequest); // send follow request
+router.delete('/:userId/following', followController.unFollow); // unfollow user
 
-router.delete('/:followingId/unfollow', followController.unFollow);
-
-router.put('/:followRequestId/accept', followController.acceptFollowRequest);
+// router.get('/:userId/follow-requests');
+router.put(
+  '/:userId/follow-requests/:requestId',
+  followController.updateFollowRequest
+);
 
 module.exports = router;

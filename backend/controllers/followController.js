@@ -18,14 +18,24 @@ const sendFollowRequest = async (req, res) => {
   }
 };
 
-const acceptFollowRequest = async (req, res) => {
+const updateFollowRequest = async (req, res) => {
   const userId = req.user.id; // The one accepts the request is the current logged in user.
-  const followRequestId = req.params.followRequestId;
+  const followRequestId = req.params.requestId;
+
+  const ACCEPTABLE_STATUS = ['ACCEPTED', 'REJECTED'];
+  const status = req.body.status;
+
+  console.log(status);
+
+  if (!ACCEPTABLE_STATUS.includes(status)) {
+    return res.status(400).json({ success: false, message: 'Invalid status' });
+  }
 
   try {
     const followRequest = await Follow.acceptFollowRequest(
       userId,
-      followRequestId
+      followRequestId,
+      status
     );
 
     if (!followRequest) {
@@ -87,7 +97,7 @@ const unFollow = async (req, res) => {
 
 module.exports = {
   sendFollowRequest,
-  acceptFollowRequest,
+  updateFollowRequest,
   getUserFollowings,
   getUserFollowers,
   unFollow,

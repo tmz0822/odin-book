@@ -12,6 +12,7 @@ const authRouter = require('../routes/authRouter');
 const userRouter = require('../routes/userRouter');
 const postRouter = require('../routes/postRouter');
 const followRouter = require('../routes/followRouter');
+const likeRouter = require('../routes/likeRouter');
 
 // Security Middlewares
 app.use(cors());
@@ -51,7 +52,8 @@ app.use(morgan('dev'));
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
-app.use('/follows', followRouter);
+app.use('/users', followRouter);
+app.use('/posts', likeRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

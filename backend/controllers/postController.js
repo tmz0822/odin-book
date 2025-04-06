@@ -33,21 +33,6 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-const getUserPosts = async (req, res) => {
-  const userId = req.params.userId || req.user.id;
-
-  try {
-    const posts = await Post.findPostsByUserId(userId);
-
-    res.status(200).json({ success: true, posts });
-  } catch (error) {
-    console.error('Error fetching user posts:', error);
-    res
-      .status(500)
-      .json({ success: false, message: 'Failed to fetch user posts' });
-  }
-};
-
 const updatePost = async (req, res) => {
   const postId = req.params.postId;
   const userId = req.user.id;
@@ -99,7 +84,6 @@ const deletePost = async (req, res) => {
 module.exports = {
   createPost,
   getAllPosts,
-  getUserPosts,
   updatePost,
   deletePost,
 };
