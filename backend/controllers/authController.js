@@ -1,19 +1,22 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const passport = require('../config/passport');
+const { validationResult } = require('express-validator');
 
 const signup = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { email, username, password, firstName, lastName } = req.body;
 
-    if (!email || !username || !password || !firstName || !lastName) {
-      return res.status(400).json({
-        success: false,
-        message: 'All fields are required',
-      });
-    }
+    const [emailExists, usernameExists] = await Promise.all([
+      User.findByEmail(email),
+      User.findByUsername(username),
+    ]);
 
-    const emailExists = await User.findByEmail(email);
     if (emailExists) {
       return res.status(409).json({
         success: false,
@@ -21,7 +24,6 @@ const signup = async (req, res) => {
       });
     }
 
-    const usernameExists = await User.findByUsername(username);
     if (usernameExists) {
       return res.status(409).json({
         success: false,

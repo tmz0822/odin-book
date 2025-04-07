@@ -156,6 +156,13 @@ const togglePostLike = async (userId, postId) => {
           },
         },
       },
+      select: {
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
     });
 
     return { liked: !alreadyLiked, updatedPost };

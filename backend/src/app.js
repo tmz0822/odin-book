@@ -13,6 +13,7 @@ const userRouter = require('../routes/userRouter');
 const postRouter = require('../routes/postRouter');
 const followRouter = require('../routes/followRouter');
 const likeRouter = require('../routes/likeRouter');
+const commentRouter = require('../routes/commentRouter');
 
 // Security Middlewares
 app.use(cors());
@@ -54,6 +55,7 @@ app.use('/users', userRouter);
 app.use('/posts', postRouter);
 app.use('/users', followRouter);
 app.use('/posts', likeRouter);
+app.use('/posts', commentRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
