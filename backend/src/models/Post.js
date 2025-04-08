@@ -38,26 +38,29 @@ const deletePost = async (postId, userId) => {
   }
 };
 
-const findAllPosts = async () => {
+const findAllPosts = async (cursor = null, limit = 5, userId) => {
   try {
     const posts = await prisma.post.findMany({
+      take: limit + 1,
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
       orderBy: { createdAt: 'desc' },
       include: {
         author: {
           select: {
-            id: true,
-            username: true,
+            profile: true,
           },
         },
         likes: {
+          where: { id: userId },
           select: {
             id: true,
-            username: true,
           },
         },
         _count: {
           select: {
             likes: true,
+            comments: true,
           },
         },
       },
@@ -66,7 +69,7 @@ const findAllPosts = async () => {
     return posts;
   } catch (error) {
     console.error('Failed to fetch posts:', error);
-    throw new Error('Failed to fetch posts');
+    throw new Error(error.message);
   }
 };
 

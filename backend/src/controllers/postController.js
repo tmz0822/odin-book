@@ -24,12 +24,36 @@ const createPost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.findAllPosts();
+    const userId = req.user.id;
+    const { cursor } = req.query;
+    const limit = parseInt(req.query.limit) || 5;
 
-    res.json({ success: true, posts });
+    const posts = await Post.findAllPosts(cursor, limit, userId);
+    const hasMore = posts.length > limit;
+    if (hasMore) {
+      // the posts returned are 6, we need to pop one off
+      posts.pop();
+    }
+
+    const transformedPosts = posts.map((post) => ({
+      ...post,
+      isLiked: post.likes.length > 0,
+      likeCount: post._count.likes,
+      commentCount: post._count.comments,
+    }));
+
+    res.json({
+      posts: transformedPosts,
+      pagination: {
+        nextCursor: posts.length > 0 ? posts[posts.length - 1].id : null,
+        hasMore,
+      },
+    });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ success: false, message: 'Failed to get posts' });
+    res.status(500).json({
+      error: 'Failed to fetch posts',
+      message: error.message,
+    });
   }
 };
 

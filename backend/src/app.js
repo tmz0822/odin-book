@@ -3,20 +3,25 @@ const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 const session = require('express-session');
-const passport = require('../config/passport');
+const passport = require('./config/passport');
 const pgSession = require('connect-pg-simple')(session);
 
 require('dotenv').config();
 
-const authRouter = require('../routes/authRouter');
-const userRouter = require('../routes/userRouter');
-const postRouter = require('../routes/postRouter');
-const followRouter = require('../routes/followRouter');
-const likeRouter = require('../routes/likeRouter');
-const commentRouter = require('../routes/commentRouter');
+const authRouter = require('./routes/authRouter');
+const userRouter = require('./routes/userRouter');
+const postRouter = require('./routes/postRouter');
+const followRouter = require('./routes/followRouter');
+const likeRouter = require('./routes/likeRouter');
+const commentRouter = require('./routes/commentRouter');
 
 // Security Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 
 // Middleware
 app.use(express.json());

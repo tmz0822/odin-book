@@ -13,6 +13,21 @@ const getCurrentUser = (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const result = await User.findAllUsers();
+
+    if (result.users.length === 0) {
+      return res.status(404).json({ success: false, message: 'No user found' });
+    }
+
+    res.json({ success: true, users: result.users, pagination: {} });
+  } catch (error) {
+    console.error('Error getting all users: ', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getUserById = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -43,6 +58,7 @@ const getUserPosts = async (req, res) => {
 
 module.exports = {
   getCurrentUser,
+  getAllUsers,
   getUserById,
   getUserPosts,
   getUserPosts,

@@ -33,6 +33,31 @@ const createUser = async (userData) => {
   }
 };
 
+// Returning user list that consists of avatar, full name.
+const findAllUsers = async () => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        profile: {
+          select: {
+            picture: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    return { users };
+  } catch (error) {
+    console.error('Failed to find all users: ', error);
+    throw new Error(error.message);
+  }
+};
+
 const findByEmail = async (email) => {
   try {
     const user = await prisma.user.findUnique({
@@ -55,6 +80,9 @@ const findByUsername = async (username) => {
       where: { username },
       include: {
         profile: true,
+        likes: true,
+        sentFollowRequests: true,
+        receivedFollowRequests: true,
       },
     });
 
@@ -65,12 +93,16 @@ const findByUsername = async (username) => {
   }
 };
 
+// Used to get the 'current' user
 const findById = async (id) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id },
       include: {
         profile: true,
+        likes: true,
+        sentFollowRequests: true,
+        receivedFollowRequests: true,
       },
     });
 
@@ -82,4 +114,10 @@ const findById = async (id) => {
   }
 };
 
-module.exports = { createUser, findByEmail, findByUsername, findById };
+module.exports = {
+  createUser,
+  findAllUsers,
+  findByEmail,
+  findByUsername,
+  findById,
+};

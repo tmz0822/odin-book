@@ -12,6 +12,7 @@ async function main() {
 
   await prisma.user.create({
     data: {
+      id: '1',
       username: 'admin',
       email: faker.internet.email(),
       password: '$2a$12$S7L9DdFkTW1FZGCiczzGYu0wzWRV9WrVtfJhFASEGtr0ML2RvvRfO',
@@ -28,6 +29,7 @@ async function main() {
 
   await prisma.user.create({
     data: {
+      id: '2',
       username: 'user',
       email: faker.internet.email(),
       password: '$2a$12$S7L9DdFkTW1FZGCiczzGYu0wzWRV9WrVtfJhFASEGtr0ML2RvvRfO',
@@ -43,13 +45,14 @@ async function main() {
   });
 
   const users = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 2; i < 10; i++) {
     const username = faker.internet.username();
     const email = faker.internet.email();
     const password = faker.internet.password();
 
     const user = await prisma.user.create({
       data: {
+        id: (i + 1).toString(),
         username,
         email,
         password,

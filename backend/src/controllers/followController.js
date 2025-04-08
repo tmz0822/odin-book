@@ -25,8 +25,6 @@ const updateFollowRequest = async (req, res) => {
   const ACCEPTABLE_STATUS = ['ACCEPTED', 'REJECTED'];
   const status = req.body.status;
 
-  console.log(status);
-
   if (!ACCEPTABLE_STATUS.includes(status)) {
     return res.status(400).json({ success: false, message: 'Invalid status' });
   }

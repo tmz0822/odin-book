@@ -5,7 +5,10 @@ const router = Router();
 
 const userController = require('../controllers/userController');
 
-router.get('/me', isAuthenticated, userController.getCurrentUser);
+// users/
+router.use(isAuthenticated);
+router.get('/me', userController.getCurrentUser);
+router.get('/', userController.getAllUsers);
 
 router.get('/:userId/posts', userController.getUserPosts);
 
