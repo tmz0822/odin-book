@@ -24,7 +24,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-amber-50">
+    <div className="min-h-screen flex-col flex items-center justify-center bg-amber-50">
       <h1 className="my-5 text-4xl font-bold">Sign in</h1>
 
       <form

@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import PostList from "../components/PostList";
-import UserList from "../components/UserList";
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+import PostList from '../components/PostList';
+import UserList from '../components/UserList';
 
 const Home = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
@@ -16,3 +16,4 @@ const Home = () => {
 };
 
 export default Home;
+

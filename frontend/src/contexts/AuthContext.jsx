@@ -1,12 +1,12 @@
-import { createContext, useEffect, useState } from "react";
-import { authService } from "../services/authService";
+import { createContext, useEffect, useState } from 'react';
+import { authService } from '../services/authService';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const isAuthenticated = user !== null;
+  const isAuthenticated = currentUser !== null;
 
   useEffect(() => {
     checkAuth();
@@ -14,19 +14,19 @@ const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("http://localhost:3000/users/me", {
-        credentials: "include",
+      const response = await fetch('http://localhost:3000/users/me', {
+        credentials: 'include',
       });
 
       const data = await response.json();
       if (data.success) {
-        setUser(data.user);
+        setCurrentUser(data.user);
       } else {
-        setUser(null);
+        setCurrentUser(null);
       }
     } catch (error) {
-      console.error("Auth check failed:", error);
-      setUser(null);
+      console.error('Auth check failed:', error);
+      setCurrentUser(null);
     } finally {
       setLoading(false);
     }
@@ -35,18 +35,18 @@ const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     const data = await authService.login(username, password);
     if (data.success) {
-      setUser(data.user);
+      setCurrentUser(data.user);
     }
   };
 
   const logout = async () => {
     await authService.logout();
-    setUser(null);
+    setCurrentUser(null);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, loading, login, logout }}
+      value={{ currentUser, isAuthenticated, loading, login, logout }}
     >
       {children}
     </AuthContext.Provider>
@@ -54,3 +54,4 @@ const AuthProvider = ({ children }) => {
 };
 
 export { AuthProvider, AuthContext };
+
