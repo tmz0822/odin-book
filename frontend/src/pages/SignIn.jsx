@@ -1,14 +1,14 @@
-import { useContext } from 'react';
-import { useState } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router';
+import { useContext } from "react";
+import { useState } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 const SignIn = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -16,19 +16,19 @@ const SignIn = () => {
     e.preventDefault();
     try {
       await login(username, password);
-      setError('');
-      navigate('/');
+      setError("");
+      navigate("/");
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div className="bg-amber-50 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold my-5">Sign in</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-amber-50">
+      <h1 className="my-5 text-4xl font-bold">Sign in</h1>
 
       <form
-        className="border-1 w-full max-w-[400px] p-8 "
+        className="w-full max-w-[400px] border-1 p-8"
         onSubmit={handleSubmit}
       >
         <div>

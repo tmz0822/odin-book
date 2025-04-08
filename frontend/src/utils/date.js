@@ -1,4 +1,4 @@
-import { formatDistanceToNow, format, isToday, isYesterday } from 'date-fns';
+import { formatDistanceToNow, format, isToday, isYesterday } from "date-fns";
 
 export function formatPostDate(date) {
   const parsed = new Date(date);
@@ -8,8 +8,8 @@ export function formatPostDate(date) {
   }
 
   if (isYesterday(parsed)) {
-    return `Yesterday at ${format(parsed, 'h:mm a')}`;
+    return `Yesterday at ${format(parsed, "h:mm a")}`;
   }
 
-  return format(parsed, 'MMM d [at] h:mm a');
+  return format(parsed, "MMM d [at] h:mm a");
 }

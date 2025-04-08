@@ -1,7 +1,7 @@
-import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
-import logo from '../../public/logo.png';
+import logo from "../assets/logo.png";
 
 const Header = () => {
   const { user } = useContext(AuthContext);
@@ -9,11 +9,11 @@ const Header = () => {
   console.log(user);
 
   return (
-    <header className="bg-neutral-400 max-h-20 h-full flex items-center">
+    <header className="flex h-full max-h-20 items-center bg-neutral-400">
       {/* Left */}
       <div className="flex items-center">
         <img
-          className="w-20 h-20 object-fill"
+          className="h-20 w-20 object-fill"
           src={logo}
           alt="Socialize Logo"
         />
@@ -23,14 +23,16 @@ const Header = () => {
       <nav className="flex-1"></nav>
       {/* Right(user avatar) */}
       <div className="mr-4 flex items-center gap-4">
-        <div className="w-10 h-10 flex gap">
+        <div className="gap flex h-10 w-10">
           <img
-            className="object-cover rounded-full w-full"
+            className="w-full rounded-full object-cover"
             src={user.profile.picture}
             alt=""
           />
         </div>
-        <h1>{user.username}</h1>
+        <h1 className="font-semibold">
+          {user.profile.firstName} {user.profile.lastName}
+        </h1>
       </div>
     </header>
   );

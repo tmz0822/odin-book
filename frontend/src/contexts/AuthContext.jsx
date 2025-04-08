@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
-import { authService } from '../services/authService';
+import { createContext, useEffect, useState } from "react";
+import { authService } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -14,8 +14,8 @@ const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3000/users/me', {
-        credentials: 'include',
+      const response = await fetch("http://localhost:3000/users/me", {
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
         setUser(null);
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error("Auth check failed:", error);
       setUser(null);
     } finally {
       setLoading(false);
