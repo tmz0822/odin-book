@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { userService } from '../services/userService';
+import { userService } from '../../services/userService';
 import User from './User';
 import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const UserList = () => {
   const { currentUser } = useContext(AuthContext);

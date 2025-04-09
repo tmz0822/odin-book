@@ -1,8 +1,9 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { postService } from '../services/postService';
+import { postService } from '../../services/postService';
 import Post from './Post';
-import { AuthContext } from '../contexts/AuthContext';
-import CreatePostDialog from '../components/CreatePostDialog';
+import { AuthContext } from '../../contexts/AuthContext';
+import CreatePostDialog from './CreatePostDialog';
+import { commentService } from '../../services/commentService';
 
 const PostList = () => {
   const { currentUser } = useContext(AuthContext);
@@ -80,6 +81,12 @@ const PostList = () => {
     [loading, hasMore, nextCursor, fetchPosts]
   );
 
+  const updatePosts = (updatedPost) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
+    );
+  };
+
   return (
     <div className="flex flex-col flex-1 justify-center items-center">
       {/* Open add post dialog */}
@@ -102,28 +109,24 @@ const PostList = () => {
         onClose={closeCreatePostDialog}
         handlePost={handlePost}
       />
-
       {/* Show posts */}
-
       <ul className="max-w-xl w-full">
         {posts.map((post, index) => {
           if (index === posts.length - 1) {
             return (
               <li key={post.id} ref={lastPostRef}>
-                <Post post={post} />
+                <Post post={post} updatePosts={updatePosts} />
               </li>
             );
           } else {
             return (
               <li key={post.id}>
-                <Post post={post} />
+                <Post post={post} updatePosts={updatePosts} />
               </li>
             );
           }
         })}
-
         {loading && <p>Loading...</p>}
-
         {!hasMore && !loading && <p>No more posts to load</p>}
       </ul>
     </div>

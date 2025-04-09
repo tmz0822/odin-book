@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 
 const Header = () => {
   const { currentUser } = useContext(AuthContext);

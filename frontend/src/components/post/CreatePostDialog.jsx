@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Dialog from './reusable/Dialog';
-import { postService } from '../services/postService';
+import Dialog from '../common/Dialog';
+import { postService } from '../../services/postService';
 
 const CreatePostDialog = ({ isOpen, onClose, handlePost }) => {
   const [error, setError] = useState('');
@@ -19,12 +19,7 @@ const CreatePostDialog = ({ isOpen, onClose, handlePost }) => {
   }
 
   return (
-    <Dialog isOpen={isOpen} onClose={onClose}>
-      {/* Header */}
-      <div className="p-4 border-b-1 border-b-gray-300">
-        <h1 className="text-xl text-center font-semibold">Create Post</h1>
-      </div>
-
+    <Dialog isOpen={isOpen} onClose={onClose} title="Create Post">
       {/* Content */}
       <form className="p-4" action={post}>
         <textarea

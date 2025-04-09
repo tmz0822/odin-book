@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { followService } from '../services/followService';
+import { AuthContext } from '../../contexts/AuthContext';
+import { followService } from '../../services/followService';
 
 const User = ({ user }) => {
   const { currentUser } = useContext(AuthContext);

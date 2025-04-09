@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import PostList from '../components/PostList';
-import UserList from '../components/UserList';
+import PostList from '../components/post/PostList';
+import UserList from '../components/user/UserList';
 
 const Home = () => {
   const { currentUser, isAuthenticated } = useContext(AuthContext);
