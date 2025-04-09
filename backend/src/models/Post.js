@@ -13,6 +13,25 @@ const addPost = async (postData, userId) => {
           },
         },
       },
+      include: {
+        author: {
+          select: {
+            profile: true,
+          },
+        },
+        likes: {
+          where: { id: userId },
+          select: {
+            id: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
+        },
+      },
     });
 
     return post;

@@ -15,7 +15,14 @@ const createPost = async (req, res) => {
 
     const createdPost = await Post.addPost(postData, userId);
 
-    res.status(201).json({ success: true, post: createdPost });
+    const transformedPost = {
+      ...createdPost,
+      isLiked: createdPost.likes.length > 0,
+      likeCount: createdPost._count.likes,
+      commentCount: createdPost._count.comments,
+    };
+
+    res.status(201).json({ success: true, post: transformedPost });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ success: false, message: 'Failed to create post' });

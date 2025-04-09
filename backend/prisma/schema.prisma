@@ -17,6 +17,7 @@ enum FollowRequestStatus {
   PENDING
   ACCEPTED
   REJECTED
+  UNFOLLOWED
 }
 
 model User {

@@ -30,7 +30,7 @@ const updateFollowRequest = async (req, res) => {
   }
 
   try {
-    const followRequest = await Follow.acceptFollowRequest(
+    const followRequest = await Follow.updateFollowRequest(
       userId,
       followRequestId,
       status
@@ -41,12 +41,13 @@ const updateFollowRequest = async (req, res) => {
       throw new Error('Invalid follow request');
     }
 
-    const follow = await Follow.addFollow(
-      followRequest.senderId,
-      followRequest.receiverId
-    );
-
-    res.json({ success: true, follow });
+    if (status === 'ACCEPTED') {
+      const follow = await Follow.addFollow(
+        followRequest.senderId,
+        followRequest.receiverId
+      );
+      res.json({ success: true, follow });
+    }
   } catch (error) {
     console.error('Failed to accept follow request');
     res.status(500).json({ success: false, message: error.message });
@@ -81,7 +82,7 @@ const getUserFollowers = async (req, res) => {
 
 const unFollow = async (req, res) => {
   const userId = req.user.id;
-  const followingId = req.params.followingId;
+  const followingId = req.params.userId;
 
   try {
     const deletedFollow = await Follow.deleteFollow(userId, followingId);

@@ -6,15 +6,29 @@ const addFollowRequest = async (senderId, receiverId) => {
   }
 
   try {
-    const existingFollowRequest = await findFollowRequest(senderId, receiverId);
+    const existingFollow = await prisma.follow.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: senderId,
+          followingId: receiverId,
+        },
+      },
+    });
 
-    if (existingFollowRequest) {
-      console.error('You have already sent a follow request');
-      throw new Error('You have already sent a follow request');
+    if (existingFollow) {
+      throw new Error('You are already following this person');
     }
 
-    const followRequest = await prisma.followRequest.create({
-      data: {
+    // Update follow request if the request exists
+    // Change the status to 'PENDING' as user sends follow request again
+    const followRequest = await prisma.followRequest.upsert({
+      where: {
+        senderId_receiverId: { senderId, receiverId },
+      },
+      update: {
+        status: 'PENDING',
+      },
+      create: {
         sender: {
           connect: {
             id: senderId,
@@ -35,7 +49,7 @@ const addFollowRequest = async (senderId, receiverId) => {
   }
 };
 
-const acceptFollowRequest = async (userId, followRequestId, status) => {
+const updateFollowRequest = async (userId, followRequestId, status) => {
   try {
     const followRequest = await findFollowRequestById(followRequestId);
 
@@ -48,7 +62,7 @@ const acceptFollowRequest = async (userId, followRequestId, status) => {
       throw new Error('Unauthorized to accept this follow request');
     }
 
-    await prisma.followRequest.update({
+    const updatedFollowRequest = await prisma.followRequest.update({
       where: {
         id: followRequestId,
       },
@@ -57,7 +71,7 @@ const acceptFollowRequest = async (userId, followRequestId, status) => {
       },
     });
 
-    return followRequest;
+    return updatedFollowRequest;
   } catch (error) {
     console.error('Failed to accept follow request:', error);
     throw new Error(error.message);
@@ -185,6 +199,16 @@ const deleteFollow = async (followerId, followingId) => {
       },
     });
 
+    // set FollowRequestStatus to 'UNFOLLOWED' after unfollow
+    await prisma.followRequest.update({
+      where: {
+        senderId_receiverId: { senderId: followerId, receiverId: followingId },
+      },
+      data: {
+        status: 'UNFOLLOWED',
+      },
+    });
+
     return deletedFollow;
   } catch (error) {
     console.error('Failed to delete follow:', error);
@@ -194,7 +218,7 @@ const deleteFollow = async (followerId, followingId) => {
 
 module.exports = {
   addFollowRequest,
-  acceptFollowRequest,
+  updateFollowRequest,
   addFollow,
   findUserFollowings,
   findUserFollowers,

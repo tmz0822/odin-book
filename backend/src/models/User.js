@@ -81,6 +81,8 @@ const findByUsername = async (username) => {
       include: {
         profile: true,
         likes: true,
+        following: true,
+        followers: true,
         sentFollowRequests: true,
         receivedFollowRequests: true,
       },
@@ -101,8 +103,13 @@ const findById = async (id) => {
       include: {
         profile: true,
         likes: true,
+        following: true,
+        followers: true,
         sentFollowRequests: true,
         receivedFollowRequests: true,
+      },
+      omit: {
+        password: true,
       },
     });
 
