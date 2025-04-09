@@ -1,10 +1,10 @@
 const fetchPosts = async (cursor = null) => {
   try {
     const response = await fetch(
-      `http://localhost:3000/posts?cursor=${cursor || ""}`,
+      `http://localhost:3000/posts?cursor=${cursor || ''}`,
       {
-        credentials: "include",
-      },
+        credentials: 'include',
+      }
     );
 
     const data = await response.json();
@@ -21,14 +21,34 @@ const likePost = async (postId) => {
     const response = await fetch(
       `http://localhost:3000/posts/${postId}/likes`,
       {
-        credentials: "include",
-        method: "post",
-      },
+        credentials: 'include',
+        method: 'post',
+      }
     );
 
     if (!response.ok) {
-      throw new Error("Failed to like post");
+      throw new Error('Failed to like post');
     }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const createPost = async (postData) => {
+  try {
+    const response = await fetch('http://localhost:3000/posts', {
+      credentials: 'include',
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
 
     const data = await response.json();
 
@@ -42,4 +62,6 @@ const likePost = async (postId) => {
 export const postService = {
   fetchPosts,
   likePost,
+  createPost,
 };
+

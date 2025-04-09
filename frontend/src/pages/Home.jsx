@@ -1,15 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import PostList from '../components/PostList';
 import UserList from '../components/UserList';
 
 const Home = () => {
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { currentUser, isAuthenticated } = useContext(AuthContext);
 
   return (
     <div className="flex">
-      {/* Show posts */}
+      {/* Middle */}
+
       <PostList />
+
+      {/* Right sidebar */}
       <UserList />
     </div>
   );

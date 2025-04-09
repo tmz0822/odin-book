@@ -1,14 +1,28 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { postService } from "../services/postService";
-import Post from "./Post";
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { postService } from '../services/postService';
+import Post from './Post';
+import { AuthContext } from '../contexts/AuthContext';
+import CreatePostDialog from '../components/CreatePostDialog';
 
 const PostList = () => {
+  const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [nextCursor, setNextCursor] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-
   const observer = useRef();
+
+  const [showCreatePostDialog, setShowCreatePostDialog] = useState(false);
+
+  function closeCreatePostDialog() {
+    setShowCreatePostDialog(false);
+  }
+
+  async function handlePost(postData) {
+    const data = await postService.createPost(postData);
+
+    setPosts((prevPosts) => [data.post, ...prevPosts]);
+  }
 
   useEffect(() => {
     fetchPosts();
@@ -30,17 +44,17 @@ const PostList = () => {
         console.log(data);
 
         setPosts((prevPosts) =>
-          cursor ? [...prevPosts, ...data.posts] : data.posts,
+          cursor ? [...prevPosts, ...data.posts] : data.posts
         );
         setNextCursor(data.pagination.nextCursor);
         setHasMore(data.pagination.hasMore);
       } catch (error) {
-        console.error("Failed to load posts", error);
+        console.error('Failed to load posts', error);
       } finally {
         setLoading(false);
       }
     },
-    [loading, hasMore],
+    [loading, hasMore]
   );
 
   const lastPostRef = useCallback(
@@ -51,44 +65,70 @@ const PostList = () => {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            console.log("Next cursor: ", nextCursor);
+            console.log('Next cursor: ', nextCursor);
             fetchPosts(nextCursor);
           }
         },
         {
-          rootMargin: "200px",
-        },
+          rootMargin: '200px',
+        }
       );
 
       if (node) observer.current.observe(node);
     },
 
-    [loading, hasMore, nextCursor, fetchPosts],
+    [loading, hasMore, nextCursor, fetchPosts]
   );
 
   return (
-    <ul className="flex-1">
-      {posts.map((post, index) => {
-        if (index === posts.length - 1) {
-          return (
-            <li key={post.id} ref={lastPostRef}>
-              <Post post={post} />
-            </li>
-          );
-        } else {
-          return (
-            <li key={post.id}>
-              <Post post={post} />
-            </li>
-          );
-        }
-      })}
+    <div className="flex flex-col flex-1 justify-center items-center">
+      {/* Open add post dialog */}
+      <div className="flex gap-4 p-6 bg-white max-w-xl w-full mb-4 rounded-2xl">
+        <img
+          className="w-10 h-10 rounded-full"
+          src={currentUser.profile.picture}
+          alt="User avatar"
+        />
 
-      {loading && <p>Loading...</p>}
+        <button
+          className="bg-gray-100 w-full rounded-full hover:bg-gray-200 text-left px-4 text-gray-700 hover:text-gray-900 transition-colors duration-200 cursor-pointer"
+          onClick={() => setShowCreatePostDialog(true)}
+        >
+          Click me to add a post
+        </button>
+      </div>
+      <CreatePostDialog
+        isOpen={showCreatePostDialog}
+        onClose={closeCreatePostDialog}
+        handlePost={handlePost}
+      />
 
-      {!hasMore && !loading && <p>No more posts to load</p>}
-    </ul>
+      {/* Show posts */}
+
+      <ul className="max-w-xl w-full">
+        {posts.map((post, index) => {
+          if (index === posts.length - 1) {
+            return (
+              <li key={post.id} ref={lastPostRef}>
+                <Post post={post} />
+              </li>
+            );
+          } else {
+            return (
+              <li key={post.id}>
+                <Post post={post} />
+              </li>
+            );
+          }
+        })}
+
+        {loading && <p>Loading...</p>}
+
+        {!hasMore && !loading && <p>No more posts to load</p>}
+      </ul>
+    </div>
   );
 };
 
 export default PostList;
+

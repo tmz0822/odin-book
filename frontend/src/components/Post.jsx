@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
-import { postService } from "../services/postService";
-import { formatPostDate } from "../utils/date";
-import { AuthContext } from "../contexts/AuthContext";
+import { useContext, useState } from 'react';
+import { postService } from '../services/postService';
+import { formatPostDate } from '../utils/date';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Post = ({ post }) => {
   const [isLiked, setIsLiked] = useState(post.isLiked);
@@ -22,7 +22,7 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div className="mx-auto mb-4 flex w-full max-w-xl flex-col gap-2 rounded-2xl bg-white p-4 pb-0 shadow">
+    <div className="mx-auto mb-4 flex w-full flex-col gap-2 rounded-2xl bg-white p-4 pb-0 shadow">
       {/* Header */}
       <div className="flex items-center gap-4">
         {/* Avatar */}
@@ -51,7 +51,7 @@ const Post = ({ post }) => {
       <div className="flex justify-between text-sm text-gray-600">
         <span>👍 {likeCount}</span>
         <span>
-          {post.commentCount} {post.commentCount > 1 ? "comments" : "comment"}
+          {post.commentCount} {post.commentCount > 1 ? 'comments' : 'comment'}
         </span>
       </div>
 
@@ -59,7 +59,7 @@ const Post = ({ post }) => {
       <div className="flex gap-1 border-t-1 border-gray-300">
         <button
           className={`my-1 flex-1 cursor-pointer rounded-sm p-1 transition-colors duration-200 hover:bg-amber-200 ${
-            isLiked && "bg-amber-100"
+            isLiked && 'bg-amber-100'
           }`}
           onClick={handleLike}
         >
@@ -77,3 +77,4 @@ const Post = ({ post }) => {
 };
 
 export default Post;
+
