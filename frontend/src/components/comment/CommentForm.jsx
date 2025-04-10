@@ -18,7 +18,7 @@ const CommentForm = ({ handleComment, post }) => {
   };
 
   return (
-    <div className="pt-2 flex gap-4">
+    <div className="pt-2 pb-2 flex gap-4 ">
       <img
         className="w-9 h-9 rounded-full"
         src={currentUser.profile.picture}

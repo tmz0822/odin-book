@@ -4,11 +4,13 @@ import { formatPostDate } from '../../utils/date';
 import { AuthContext } from '../../contexts/AuthContext';
 import CommentForm from '../comment/CommentForm';
 import { commentService } from '../../services/commentService';
+import PostDialog from './PostDialog';
 
-const Post = ({ post, updatePosts }) => {
+const Post = ({ post, updatePosts, className }) => {
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likeCount, setLikeCount] = useState(post.likeCount);
   const [showComment, setShowComment] = useState(false);
+  const [showPostDialog, setShowPostDialog] = useState(false);
 
   const handleLike = async () => {
     try {
@@ -29,7 +31,6 @@ const Post = ({ post, updatePosts }) => {
 
     const updatedPost = {
       ...post,
-      comments: [data.comment, ...post.comments],
       commentCount: post.commentCount + 1,
     };
 
@@ -40,7 +41,7 @@ const Post = ({ post, updatePosts }) => {
   }
 
   return (
-    <div className="bg-white px-4 pt-3 pb-2 shadow rounded-2xl mb-4">
+    <div className={`bg-white px-4 pt-3 ${className}`}>
       {/* Post */}
       <div className="flex flex-col gap-2">
         {/* Header */}
@@ -64,13 +65,19 @@ const Post = ({ post, updatePosts }) => {
         </div>
 
         {/* Post Content */}
-        <p>{post.content}</p>
+        <p className="break-words">{post.content}</p>
+
         {/* Post image (optional) */}
 
         {/* Post likes and comments */}
         <div className="flex justify-between text-sm text-gray-600">
           <span>👍 {likeCount}</span>
-          <span>
+          <PostDialog
+            isOpen={showPostDialog}
+            onClose={() => setShowPostDialog(false)}
+            post={post}
+          />
+          <span onClick={() => setShowPostDialog(true)}>
             {post.commentCount} {post.commentCount > 1 ? 'comments' : 'comment'}
           </span>
         </div>

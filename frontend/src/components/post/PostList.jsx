@@ -115,13 +115,21 @@ const PostList = () => {
           if (index === posts.length - 1) {
             return (
               <li key={post.id} ref={lastPostRef}>
-                <Post post={post} updatePosts={updatePosts} />
+                <Post
+                  className="shadow mb-4 rounded-2xl"
+                  post={post}
+                  updatePosts={updatePosts}
+                />
               </li>
             );
           } else {
             return (
               <li key={post.id}>
-                <Post post={post} updatePosts={updatePosts} />
+                <Post
+                  className="shadow mb-4 rounded-2xl"
+                  post={post}
+                  updatePosts={updatePosts}
+                />
               </li>
             );
           }
