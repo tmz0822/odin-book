@@ -18,14 +18,12 @@ const PostDialog = ({ post, isOpen, onClose }) => {
 
       setComments((prevComments) => [...prevComments, ...result.data]);
 
-      // setMeta((prevMeta) => ({
-      //   ...prevMeta,
-      //   total: result.meta.total,
-      //   page: prevMeta.page + 1,
-      //   totalPages: result.meta.totalPages,
-      // }));
-
-      setMeta(result.meta);
+      setMeta((prevMeta) => ({
+        ...prevMeta,
+        total: result.meta.total,
+        page: prevMeta.page + 1,
+        totalPages: result.meta.totalPages,
+      }));
     } catch (error) {
       console.error(error);
     } finally {
@@ -38,10 +36,6 @@ const PostDialog = ({ post, isOpen, onClose }) => {
       fetchComments();
     }
   }, [post.id, isOpen]);
-
-  console.log(comments);
-  console.log(hasMoreComments);
-  console.log(meta.page, meta.totalPages);
 
   return (
     <Dialog

@@ -8,13 +8,14 @@ export default function Dialog({ isOpen, onClose, title, children }) {
     }
   };
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    console.log(isOpen);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+  }, [isOpen]);
 
-  if (isOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'auto';
-  }
+  if (!isOpen) return null;
 
   return createPortal(
     // Maybe set a z-index?
