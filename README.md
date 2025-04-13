@@ -1,6 +1,6 @@
 # odin-book
 
-A social media clone focusing on backend
+A simple social media clone focusing on backend
 
 ## Core functionality
 
